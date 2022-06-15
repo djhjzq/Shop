@@ -1,9 +1,11 @@
 package com.shop.shop.controller;
 
-import org.springframework.stereotype.Controller;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@Slf4j
+@RestController
 @RequestMapping("/manager")
 public class ManagerController {
 }
