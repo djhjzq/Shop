@@ -14,4 +14,16 @@ public class ViewController {
     public String homePage() {
         return "index";
     }
+
+    @GetMapping("/user")
+    public String userPage() {
+        return "user_page";
+    }
+
+    @GetMapping("/manager")
+    public String managerPage() {
+        return "manager_page";
+    }
+
+
 }
