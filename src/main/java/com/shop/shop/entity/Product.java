@@ -19,8 +19,6 @@ public class Product extends BaseEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
     private List<Order> orderList;
 
-    private BigDecimal price;
-
     private String description;
 
 }

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Getter
@@ -18,4 +19,6 @@ public class Model extends NamedEntity {
 
     @OneToMany(mappedBy = "model", cascade = CascadeType.ALL)
     private List<Product> productList;
+
+    private BigDecimal price;
 }
