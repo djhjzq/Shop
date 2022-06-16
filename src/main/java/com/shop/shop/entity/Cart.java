@@ -21,6 +21,5 @@ public class Cart extends BaseEntity {
     @OneToMany(mappedBy = "cart")
     private List<Order> orderList;
 
-    private CartStatus cartStatus;
 
 }
