@@ -7,6 +7,7 @@ import com.shop.shop.repository.OrderRepository;
 import com.shop.shop.service.CartService;
 import com.shop.shop.service.OrderService;
 import com.shop.shop.service.ProductService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
+@Slf4j
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -46,6 +48,20 @@ public class OrderServiceImpl implements OrderService {
         product.getModel().setQuantity(product.getModel().getQuantity() - quantity);
         order.setQuantity(quantity);
         order.setProduct(product);
+        log.info("Saved order with productId: {}, and quantity: {} to repository", order.getProduct().getId(), order.getQuantity());
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Order findOrderById(Long orderId) {
+        log.info("Try to find order with id: {} ", orderId);
+        return orderRepository.findById(orderId).orElseThrow
+                (()-> new RuntimeException("Order with id "+orderId+" not found."));
+    }
+
+    @Override
+    public void deleteOrder(Long orderId) {
+        log.info("Try to delete order with id: {}", orderId);
+        orderRepository.delete(findOrderById(orderId));
     }
 }
