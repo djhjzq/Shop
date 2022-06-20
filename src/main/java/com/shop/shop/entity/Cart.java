@@ -4,6 +4,7 @@ import com.shop.shop.entity.base.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -18,7 +19,7 @@ public class Cart extends BaseEntity {
 
     private BigDecimal amount;
 
-    @OneToMany(mappedBy = "cart")
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
     private List<Order> orderList;
 
 
