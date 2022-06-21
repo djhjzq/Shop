@@ -8,6 +8,7 @@ import com.shop.shop.dto.response.ProductMapper;
 import com.shop.shop.dto.response.ProductResponse;
 import com.shop.shop.entity.Product;
 import com.shop.shop.service.ModelService;
+import com.shop.shop.service.OrderService;
 import com.shop.shop.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,15 @@ public class ManagerController {
 
     private final ProductMapper productMapper;
 
+    private final OrderService orderService;
+
     @Autowired
-    public ManagerController(ModelService modelService, ModelMapper modelMapper, ProductService productService, ProductMapper productMapper) {
+    public ManagerController(ModelService modelService, ModelMapper modelMapper, ProductService productService, ProductMapper productMapper, OrderService orderService) {
         this.modelService = modelService;
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.productMapper = productMapper;
+        this.orderService = orderService;
     }
 
     @GetMapping("/all")

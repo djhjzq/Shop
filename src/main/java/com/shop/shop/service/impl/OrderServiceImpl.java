@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -70,5 +71,10 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrder(Long orderId) {
         log.info("Try to delete order with id: {}", orderId);
         orderRepository.delete(findOrderById(orderId));
+    }
+
+    @Override
+    public List<Order> findAll() {
+        return orderRepository.findAll();
     }
 }
