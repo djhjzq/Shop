@@ -6,4 +6,7 @@ public interface CartService {
 
     Cart findCartById(Long cartId);
 
+    Cart addCart();
+
+    void createPayment(Long cartId);
 }

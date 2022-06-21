@@ -4,6 +4,7 @@ package com.shop.shop.controller;
 import com.shop.shop.dto.request.OrderRequest;
 import com.shop.shop.dto.response.OrderMapper;
 import com.shop.shop.dto.response.OrderResponse;
+import com.shop.shop.service.CartService;
 import com.shop.shop.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,10 +24,13 @@ public class UserController {
 
     private final OrderMapper orderMapper;
 
+    private final CartService cartService;
+
     @Autowired
-    public UserController(OrderService orderService, OrderMapper orderMapper) {
+    public UserController(OrderService orderService, OrderMapper orderMapper, CartService cartService) {
         this.orderService = orderService;
         this.orderMapper = orderMapper;
+        this.cartService = cartService;
     }
 
     @PostMapping("/add")
@@ -37,6 +41,12 @@ public class UserController {
     @PostMapping("/delete")
     public ResponseEntity<?> deleteOrder(Long orderId) {
         orderService.deleteOrder(orderId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/create/payment")
+    public ResponseEntity<?> createPayment(Long cartId) {
+        cartService.createPayment(cartId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

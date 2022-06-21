@@ -1,5 +1,6 @@
 package com.shop.shop.service.impl;
 
+import com.shop.shop.entity.Cart;
 import com.shop.shop.entity.Order;
 import com.shop.shop.entity.OrderStatus;
 import com.shop.shop.entity.Product;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,18 +40,23 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order addOrder(Long productId, Integer quantity, Long cartId) {
-        Order order = new Order();
-        order.setCart(cartService.findCartById(cartId));
-        order.setOrderStatus(OrderStatus.ACTIVE);
-        LocalDateTime localDateTime = LocalDateTime.now();
-        Date nowDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
-        order.setDate(new Date(nowDate.getTime()+expirationMs));
-        Product product = productService.findProductById(productId);
-        product.getModel().setQuantity(product.getModel().getQuantity() - quantity);
-        order.setQuantity(quantity);
-        order.setProduct(product);
-        log.info("Saved order with productId: {}, and quantity: {} to repository", order.getProduct().getId(), order.getQuantity());
-        return orderRepository.save(order);
+        if(productService.findProductById(productId).getModel().getQuantity() > quantity) {
+            Order order = new Order();
+            Cart cart = cartService.findCartById(cartId);
+            cart.setAmount(cart.getAmount().add((productService.findProductById(productId).getModel().getPrice().multiply(BigDecimal.valueOf(quantity)))));
+            order.setCart(cart);
+            order.setOrderStatus(OrderStatus.ACTIVE);
+            LocalDateTime localDateTime = LocalDateTime.now();
+            Date nowDate = Date.from(localDateTime.atZone(ZoneId.systemDefault()).toInstant());
+            order.setDate(new Date(nowDate.getTime() + expirationMs));
+            Product product = productService.findProductById(productId);
+            product.getModel().setQuantity(product.getModel().getQuantity() - quantity);
+            order.setQuantity(quantity);
+            order.setProduct(product);
+            log.info("Saved order with productId: {}, and quantity: {} to repository", order.getProduct().getId(), order.getQuantity());
+            return orderRepository.save(order);
+        }
+        return null;
     }
 
     @Override
