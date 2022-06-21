@@ -41,4 +41,6 @@ public class ModelServiceImpl implements ModelService {
         log.info("Try to delete model with id: {}", modelId);
         modelRepository.delete(findModelById(modelId));
     }
+
+
 }

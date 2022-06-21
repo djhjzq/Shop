@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -42,5 +44,10 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProduct(Long productId) {
         log.info("Try to delete product with id: {}", productId);
         productRepository.delete(findProductById(productId));
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 }

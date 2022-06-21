@@ -6,9 +6,7 @@ import com.shop.shop.dto.response.ModelMapper;
 import com.shop.shop.dto.response.ModelResponse;
 import com.shop.shop.dto.response.ProductMapper;
 import com.shop.shop.dto.response.ProductResponse;
-import com.shop.shop.entity.Product;
 import com.shop.shop.service.ModelService;
-import com.shop.shop.service.OrderService;
 import com.shop.shop.service.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -34,20 +33,19 @@ public class ManagerController {
 
     private final ProductMapper productMapper;
 
-    private final OrderService orderService;
 
     @Autowired
-    public ManagerController(ModelService modelService, ModelMapper modelMapper, ProductService productService, ProductMapper productMapper, OrderService orderService) {
+    public ManagerController(ModelService modelService, ModelMapper modelMapper, ProductService productService, ProductMapper productMapper) {
         this.modelService = modelService;
         this.modelMapper = modelMapper;
         this.productService = productService;
         this.productMapper = productMapper;
-        this.orderService = orderService;
     }
 
     @GetMapping("/all")
-    public List<Product> getAllProducts() {
-        return null;
+    public ResponseEntity<List<ProductResponse>> getAllProducts() {
+        return new ResponseEntity<>(productService.getAllProducts().stream()
+                .map(productMapper :: productToProductResponse).collect(Collectors.toList()), HttpStatus.OK);
     }
 
 
